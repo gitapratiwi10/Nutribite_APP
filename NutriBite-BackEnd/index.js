@@ -1,10 +1,15 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import multer from 'multer';
-import loginRoutes from './controllers/login.js';
-import registerRoutes from './controllers/register.js';
-import recipeRoutes from './controllers/recipes.js';
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import loginRoutes from "./controllers/login.js";
+import registerRoutes from "./controllers/register.js";
+import recipeRoutes from "./controllers/recipes.js";
+import deskripsiRecipeRoutes from "./controllers/deskripsiresep.js";
+import kategoriRoutes from "./controllers/kategori.js";
+import ArtikelIndex from "./controllers/artikelindex.js";
+import deskripsiArtikelRoutes from "./controllers/deskripsiartikel.js";
+import akgRoutes from "./controllers/akg.js";
+import userRoutes from "./controllers/user.js";
 
 const app = express();
 
@@ -16,24 +21,15 @@ app.use(cors());
 app.use(loginRoutes);
 app.use(registerRoutes);
 app.use(recipeRoutes);
+app.use(deskripsiRecipeRoutes);
+app.use(kategoriRoutes);
+app.use(ArtikelIndex);
+app.use(deskripsiArtikelRoutes);
+app.use(akgRoutes);
+app.use(userRoutes);
 
-
-// Setup Multer untuk unggahan file
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname)
-  }
-});
-
-const upload = multer({ storage: storage });
-
-// Rute untuk mengunggah foto profil
-app.post('/api/upload-profile-picture', upload.single('profilePic'), (req, res) => {
-  res.json({ success: true, message: 'Profile picture uploaded successfully' });
-});
+// Middleware untuk menghidangkan file statis dari folder uploads
+app.use("/uploads", express.static("uploads"));
 
 // Start server
 const PORT = process.env.PORT || 3000;

@@ -26,7 +26,7 @@ router.post('/api/login', async (req, res) => {
         return res.status(401).json({ success: false, message: 'Email or password incorrect' });
       }
 
-      const authToken = jwt.sign({ userId: user.id }, 'rahasia-rahasia', { expiresIn: '1h' });
+      const authToken = jwt.sign({userId: user.id}, 'rahasia-rahasia', { expiresIn: '14d' });
 
       res.json({ success: true, message: 'Login successful', token: authToken, username: user.username });
     });
